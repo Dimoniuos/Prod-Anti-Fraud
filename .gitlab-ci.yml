@@ -55,6 +55,7 @@ test:
     - docker compose up -d --wait
     - CHECKER_ID=$(docker compose ps -q antifraud-checker)
     - docker wait "$CHECKER_ID"
+    - docker compose logs antifraud-service
     - docker logs "$CHECKER_ID"
     - EXIT_CODE=$(docker inspect "$CHECKER_ID" --format='{{.State.ExitCode}}')
     - exit "$EXIT_CODE"
@@ -64,6 +65,7 @@ test:
     when: always
     paths:
       - reports/*
+      - application.log
     reports:
       junit: reports/junit.xml
     expire_in: 1 week
