@@ -4,11 +4,11 @@ WORKDIR /app
 
 RUN apk add --no-cache curl
 
-COPY solution/requirements.txt requirements.txt
+COPY solution /app/solution
+COPY solution/requirements.txt /app/requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY ./solution .
-
+ENV PYTHONPATH=/app
 ENV SERVER_PORT=8080
 
-CMD ["sh", "-c", "exec python3 -m flask run --host=0.0.0.0 --port=$SERVER_PORT"]
+CMD ["sh", "-c", "exec uvicorn solution.app:app --host=0.0.0.0 --port=$SERVER_PORT"]
